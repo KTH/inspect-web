@@ -1,6 +1,6 @@
 {
-  "name": "node-web",
-  "version": "2.0.0",
+  "name": "inspect-web",
+  "version": "1.0.0",
   "description": "Template project for a node express web server",
   "main": "app.js",
   "private": true,
@@ -8,7 +8,7 @@
   "author": "KTH",
   "repository": {
     "type": "git",
-    "uri": "https://github.com/KTH/node-web"
+    "uri": "https://github.com/KTH/inspect-web"
   },
   "scripts": {
     "vendor": "parcel build  ./public/js/vendor.js",
