@@ -6,7 +6,7 @@ const log = require('kth-node-log')
 const language = require('kth-node-web-common/lib/language')
 
 // eslint-disable-next-line no-unused-vars
-const api = require('../api')
+// const api = require('../api')
 const serverConfig = require('../configuration').server
 
 const { getServerSideFunctions } = require('../utils/serverSideRendering')

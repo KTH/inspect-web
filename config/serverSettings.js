@@ -62,9 +62,9 @@ module.exports = {
   },
 
   // API keys
-  apiKey: {
-    nodeApi: getEnv('NODE_API_KEY', devDefaults('1234')),
-  },
+  // apiKey: {
+  //   nodeApi: getEnv('NODE_API_KEY', devDefaults('1234')),
+  // },
 
   // Authentication
   // auth: {
@@ -76,9 +76,9 @@ module.exports = {
   // // ldap: unpackLDAPConfig('LDAP_URI', getEnv('LDAP_PASSWORD'), devLdap, ldapOptions),
 
   // Service API's
-  nodeApi: {
-    nodeApi: unpackNodeApiConfig('NODE_API_URI', devInnovationApi),
-  },
+  // nodeApi: {
+  //   nodeApi: unpackNodeApiConfig('NODE_API_URI', devInnovationApi),
+  // },
 
   // Cortina
   blockApi: {
@@ -97,11 +97,11 @@ module.exports = {
   clientLogging: {
     level: 'debug',
   },
-  cache: {
-    cortinaBlock: {
-      redis: unpackRedisConfig('REDIS_URI', devRedis),
-    },
-  },
+  // cache: {
+  //   cortinaBlock: {
+  //     redis: unpackRedisConfig('REDIS_URI', devRedis),
+  //   },
+  // },
 
   // Session
   sessionSecret: getEnv('SESSION_SECRET', devDefaults('1234567890')),

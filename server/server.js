@@ -185,15 +185,15 @@ server.use('/', authRoute.getRouter())
  * ******* CORTINA BLOCKS *******
  * ******************************
  */
-server.use(
-  config.proxyPrefixPath.uri,
-  require('kth-node-web-common/lib/web/cortina')({
-    blockUrl: config.blockApi.blockUrl,
-    proxyPrefixPath: config.proxyPrefixPath.uri,
-    hostUrl: config.hostUrl,
-    redisConfig: config.cache.cortinaBlock.redis,
-  })
-)
+// server.use(
+//   config.proxyPrefixPath.uri,
+//   require('kth-node-web-common/lib/web/cortina')({
+//     blockUrl: config.blockApi.blockUrl,
+//     proxyPrefixPath: config.proxyPrefixPath.uri,
+//     hostUrl: config.hostUrl,
+//     redisConfig: config.cache.cortinaBlock.redis,
+//   })
+// )
 
 /* ********************************
  * ******* CRAWLER REDIRECT *******
