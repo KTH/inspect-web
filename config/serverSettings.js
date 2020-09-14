@@ -115,6 +115,6 @@ module.exports = {
       },
       proxy: safeGet(() => getEnv('SESSION_TRUST_PROXY', true) === 'true'),
     },
-    redisOptions: unpackRedisConfig('REDIS_URI', devRedis),
+    // redisOptions: unpackRedisConfig('REDIS_URI', devRedis),
   },
 }
