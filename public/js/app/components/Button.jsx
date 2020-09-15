@@ -6,9 +6,11 @@ import { useStore } from '../mobx'
 import i18n from '../../../../i18n'
 
 function Button({ caption = 'N/A' }) {
-  const { language: lang } = useStore()
+  const { language: lang, getTeams } = useStore()
 
   const [buttonClicked, setButtonClicked] = useState(false)
+
+  getTeams()
 
   return (
     <>

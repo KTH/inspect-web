@@ -9,7 +9,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { MobxStoreProvider, uncompressStoreInPlaceFromDocument } from './mobx'
 import createApplicationStore from './stores/createApplicationStore'
 
-import '../../css/node-web.scss'
+import '../../css/inspect-web.scss'
 
 import Start from './pages/Start'
 
