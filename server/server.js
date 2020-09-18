@@ -100,7 +100,7 @@ server.use(config.proxyPrefixPath.uri + '/static/browserConfig', browserConfigHa
 // Files/statics routes
 server.use(config.proxyPrefixPath.uri + '/static/kth-style', express.static('./node_modules/kth-style/dist'))
 // Map static content like images, css and js.
-server.use(config.proxyPrefixPath.uri + '/static', express.static('./dist'))
+server.use(config.proxyPrefixPath.uri + '/static', express.static('./dist', { dotfiles: 'allow' }))
 
 server.use(config.proxyPrefixPath.uri + '/static/icon/favicon', express.static('./public/favicon.ico'))
 

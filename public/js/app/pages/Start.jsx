@@ -5,8 +5,10 @@ import { useStore } from '../mobx'
 
 import i18n from '../../../../i18n'
 
-import Button from '../components/Button'
+// import Button from '../components/Button'
 import Teams from '../components/Teams'
+import Apps from '../components/Apps'
+import AppList from '../components/AppList'
 
 const Start = () => {
   const { message, language: lang } = useStore()
@@ -15,13 +17,10 @@ const Start = () => {
     <div className="row">
       <menu className="col-3" id="menu">
         <Teams></Teams>
+        <Apps></Apps>
       </menu>
       <main className="col-9" id="mainContent">
-        <h1>Node-web</h1>
-        <h2>{i18n.message('template_app_works', lang)}</h2>
-        <hr className="my-2" />
-        <p>{`${i18n.message('template_store_text', lang)}: ${message}`}</p>
-        <Button caption={i18n.message('template_try_me', lang)} />
+        <AppList></AppList>
       </main>
     </div>
   )

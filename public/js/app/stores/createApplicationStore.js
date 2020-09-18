@@ -3,13 +3,14 @@
 // @ts-check
 
 // eslint-disable-next-line no-unused-vars
-import { observable, action } from 'mobx'
+import { observable, observe, action, computed, reaction, autorun, toJS, set } from 'mobx'
 
 const { BlobServiceClient } = require('@azure/storage-blob')
 export default createApplicationStore
+const blobServiceClient = new BlobServiceClient(window.config.azureBlobConnectionString.uri)
 
 function createApplicationStore() {
-  const store = {
+  const store = observable({
     language: null,
 
     message: 'Hallo',
@@ -22,17 +23,62 @@ function createApplicationStore() {
       this.language = lang
     }),
 
-    teams: {},
+    teams: new Map(),
+    apps: [],
+    get selectedApps() {
+      return this.apps.filter(a => a.selected)
+    },
 
     getTeams: action(async function () {
-      // Create a new BlobServiceClient
-      const blobServiceClient = new BlobServiceClient(window.config.azureBlobConnectionString.uri)
-
-      let containers = blobServiceClient.listContainers()
+      const containers = blobServiceClient.listContainers()
       for await (const container of containers) {
-        this.teams[container.name] = this.teams[container.name] != false
+        const isChecked = this.teams.get(container.name) == undefined || false ? false : true
+        this.teams.set(container.name, isChecked)
       }
     }),
-  }
+  })
+
+  let count = 0
+
+  observe(
+    store.teams,
+    // () => toJS(store.teams),
+    async event => {
+      const selectedTeams = []
+      const team = event.name
+      if (event.type === 'update' && event.newValue) {
+        selectedTeams.push(team)
+      } else {
+        store.apps
+          .filter(app => app.team === team)
+          .forEach(app => {
+            store.apps.remove(app)
+          })
+      }
+
+      const getTeamsAppsWorker = new Worker('./getTeamsAppsWorker.js')
+
+      getTeamsAppsWorker.onmessage = function (e) {
+        console.log('Message received from worker' + JSON.stringify(e.data))
+        store.apps.push(
+          ...e.data.map(a => {
+            a.selected = true
+            return a
+          })
+        )
+      }
+
+      console.log('Posting message')
+      getTeamsAppsWorker.postMessage({
+        config: window.config.azureBlobConnectionString.uri,
+        teams: selectedTeams,
+      })
+
+      // TODO Kill workers
+    }
+  )
+
+  store.getTeams()
+
   return store
 }
