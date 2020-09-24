@@ -71,8 +71,6 @@ if (!self.window.Node) {
 const { BlobServiceClient } = require('@azure/storage-blob')
 
 onmessage = async function (e) {
-  console.log('getAppsWorker got message: ' + e.data.team)
-
   const blobServiceClient = new BlobServiceClient(e.data.config)
   const { team } = e.data
 
@@ -88,11 +86,6 @@ onmessage = async function (e) {
     }
 
     const blockBlobClient = containerClient.getBlockBlobClient(blob.name)
-    // fetch(blockBlobClient.url).then(response => console.log(response.json()))
-
-    // const downloadBlockBlobResponse = await blockBlobClient.download(0)
-    // console.log('\nDownloaded blob content...')
-    // downloadBlockBlobResponse.blobBody.then(result => console.log(result))
 
     const nameParts = blob.name.match(/([^_]*?)((?=_)|$)/g).filter(s => s !== undefined && s.trim().length > 0)
 
@@ -110,25 +103,24 @@ onmessage = async function (e) {
     }
 
     const result = {}
-    result.lastModified = blob.properties.lastModified
+    result.date = blob.properties.lastModified
     result.commit = commit
     result.testUrl = url.replaceAll('-', '/')
     result.dataUrl = blockBlobClient.url
-    // result.data
 
     const sameTestrun = apps[appName].results.find(r => r.commit === commit)
 
     if (sameTestrun) {
       sameTestrun.tests.push(result)
     } else {
-      apps[appName].results.push({ commit, tests: [] })
+      apps[appName].results.push({ commit, date: result.date, tests: [result] })
     }
-
-    apps[appName].latestBuild = apps[appName].results.sort(
-      (a, b) => new Date(b.lastModified) - new Date(a.lastModified)
-    )[0].commit
   }
 
-  console.log('Posting message back to main script')
+  Object.values(apps).forEach(app => {
+    const latestResultCommitHash = app.results.sort((a, b) => new Date(b.date) - new Date(a.date))[0].commit
+    app.latestBuild = latestResultCommitHash
+  })
+
   postMessage(Object.values(apps))
 }

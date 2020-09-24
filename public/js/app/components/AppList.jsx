@@ -6,7 +6,13 @@ import { useStore } from '../mobx'
 function Test({ result }) {
   return (
     <div>
-      <a href={result.dataUrl}>{result.testUrl}</a>
+      <details>
+        <summary class="white">{result.testUrl.replace('.html', '')}</summary>
+        <iframe src={result.dataUrl}></iframe>
+        <a className="newWindow" target="_blank" href={result.dataUrl}>
+          Open results in new window
+        </a>
+      </details>
     </div>
   )
 }
@@ -32,12 +38,17 @@ function AppList() {
         return (
           <details>
             <summary class="blue">
-              {app.name} - #{app.latestBuild}
+              {app.name}
+              <div className="build">
+                {latestTestrun.date.toISOString().slice(0, 16).replace('T', ' ')} - #{app.latestBuild}
+              </div>
             </summary>
             <p>
-              {latestTestrun.tests.map(result => {
-                return <Test result={result}></Test>
-              })}
+              {latestTestrun.tests
+                .filter(r => r.dataUrl.includes('.html'))
+                .map(result => {
+                  return <Test result={result}></Test>
+                })}
             </p>
           </details>
         )

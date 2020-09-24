@@ -59,7 +59,6 @@ function createApplicationStore() {
       const getTeamsAppsWorker = new Worker('./getTeamsAppsWorker.js')
 
       getTeamsAppsWorker.onmessage = function (e) {
-        console.log('Message received from worker' + JSON.stringify(e.data))
         store.apps.push(
           ...e.data.map(a => {
             a.selected = true
@@ -68,7 +67,6 @@ function createApplicationStore() {
         )
       }
 
-      console.log('Posting message')
       getTeamsAppsWorker.postMessage({
         config: window.config.azureBlobConnectionString.uri,
         teams: selectedTeams,
