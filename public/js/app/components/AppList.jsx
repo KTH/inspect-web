@@ -25,8 +25,7 @@ function AppList() {
   }
 
   return (
-    <div className="InspectResults">
-      <h1 className="SearchRefiner-GroupTitle">Apps</h1>
+    <div id="inspectResults">
       {selectedApps.map(app => {
         // const blockBlobClient = containerClient.getBlockBlobClient(blob.name)
         // fetch(blockBlobClient.url).then(response => console.log(response.json()))

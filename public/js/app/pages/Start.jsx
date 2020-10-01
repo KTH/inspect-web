@@ -16,6 +16,11 @@ const Start = () => {
   return (
     <div className="row">
       <menu className="col-3" id="menu">
+        <h1 id="logo">
+          KTH
+          <br />
+          &#305;nspect
+        </h1>
         <Teams></Teams>
         <Apps></Apps>
       </menu>

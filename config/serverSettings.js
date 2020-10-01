@@ -61,24 +61,14 @@ module.exports = {
     passphrase: getEnv('SERVER_CERT_PASSPHRASE', ''),
   },
 
-  // API keys
-  // apiKey: {
-  //   nodeApi: getEnv('NODE_API_KEY', devDefaults('1234')),
-  // },
-
   // Authentication
-  // auth: {
-  //   adminGroup: 'app.node.admin',
-  // },
-  // cas: {
-  //   ssoBaseURL: getEnv('CAS_SSO_URI', devSsoBaseURL),
-  // },
-  // // ldap: unpackLDAPConfig('LDAP_URI', getEnv('LDAP_PASSWORD'), devLdap, ldapOptions),
-
-  // Service API's
-  // nodeApi: {
-  //   nodeApi: unpackNodeApiConfig('NODE_API_URI', devInnovationApi),
-  // },
+  auth: {
+    adminGroup: 'app.node.admin',
+  },
+  cas: {
+    ssoBaseURL: getEnv('CAS_SSO_URI', devSsoBaseURL),
+  },
+  ldap: unpackLDAPConfig('LDAP_URI', getEnv('LDAP_PASSWORD'), devLdap, ldapOptions),
 
   // Cortina
   blockApi: {
@@ -115,6 +105,6 @@ module.exports = {
       },
       proxy: safeGet(() => getEnv('SESSION_TRUST_PROXY', true) === 'true'),
     },
-    // redisOptions: unpackRedisConfig('REDIS_URI', devRedis),
+    redisOptions: unpackRedisConfig('REDIS_URI', devRedis),
   },
 }
