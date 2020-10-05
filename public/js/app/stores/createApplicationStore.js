@@ -40,6 +40,8 @@ function createApplicationStore() {
 
   let count = 0
 
+  let getTeamsAppsWorker
+
   observe(
     store.teams,
     // () => toJS(store.teams),
@@ -56,7 +58,7 @@ function createApplicationStore() {
           })
       }
 
-      const getTeamsAppsWorker = new Worker('./getTeamsAppsWorker.js')
+      getTeamsAppsWorker = getTeamsAppsWorker ? getTeamsAppsWorker : new Worker('./getTeamsAppsWorker.js')
 
       getTeamsAppsWorker.onmessage = function (e) {
         store.apps.push(
@@ -72,7 +74,9 @@ function createApplicationStore() {
         teams: selectedTeams,
       })
 
-      // TODO Kill workers
+      window.onbeforeunload = event => {
+        getTeamsAppsWorker.terminate()
+      }
     }
   )
 

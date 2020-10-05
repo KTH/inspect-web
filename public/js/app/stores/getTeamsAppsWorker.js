@@ -6,6 +6,7 @@ onmessage = async function (e) {
 
     getAppsWorker.onmessage = function (e) {
       postMessage(e.data)
+      getAppsWorker.terminate()
     }
 
     getAppsWorker.postMessage({
