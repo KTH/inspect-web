@@ -4,10 +4,10 @@ import { observer } from 'mobx-react'
 import { useStore } from '../mobx'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-function Test({ result }) {
+function Test({ result, openClose }) {
   return (
     <div key={result.dataUrl}>
-      <details>
+      <details open={openClose}>
         <summary class="white">{result.testUrl.replace('.html', '')}</summary>
         <iframe src={result.dataUrl}></iframe>
         <a className="newWindow" target="_blank" href={result.dataUrl}>
@@ -61,7 +61,7 @@ function AppList() {
                 {latestTestrun.tests
                   .filter(r => r.dataUrl.includes('.html'))
                   .map(result => {
-                    return <Test result={result}></Test>
+                    return <Test result={result} openClose={openClose}></Test>
                   })}
               </details>
             </CSSTransition>
