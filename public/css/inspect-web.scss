@@ -20,6 +20,9 @@ body,
   padding-top: 3rem;
 
   details {
+    animation: fadeIn 0.5s forwards;
+    opacity: 0;
+
     summary {
       &.white {
         padding-left: 1.25rem;
@@ -79,15 +82,26 @@ body,
 .SearchRefiner-Group {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
+
+  & .SearchRefiner-GroupTitle {
+    margin-top: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dotted #bbb;
+  }
+
+  & .SearchRefiner-InputRow {
+    animation: fadeIn 0.5s forwards;
+    opacity: 0;
+  }
+
+  & .SearchRefiner-Input {
+    margin-right: 1em;
+    font-size: 0.9em;
+  }
 }
 
-.SearchRefiner-Group .SearchRefiner-GroupTitle {
-  margin-top: 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px dotted #bbb;
-}
-
-.SearchRefiner-Group .SearchRefiner-Input {
-  margin-right: 1em;
-  font-size: 0.9em;
+@keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
 }
