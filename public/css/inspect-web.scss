@@ -16,8 +16,23 @@ body,
   padding-top: 2rem;
 }
 
+main {
+  margin-top: 1rem;
+}
+
 #inspectResults {
-  padding-top: 3rem;
+  #toolbar {
+    h3 {
+      margin-top: 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px dotted #bbb;
+      color: transparent;
+    }
+
+    button {
+      float: right;
+    }
+  }
 
   details {
     summary {
@@ -77,7 +92,6 @@ body,
 }
 
 .SearchRefiner-Group {
-  margin-top: 1rem;
   margin-bottom: 0.5rem;
 
   & .SearchRefiner-GroupTitle {

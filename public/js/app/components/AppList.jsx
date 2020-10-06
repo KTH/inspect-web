@@ -25,26 +25,33 @@ function AppList() {
     app.selected = !app.selected
   }
 
+  let [openClose, toggleAllResults] = useState(0)
+
   return (
     <div id="inspectResults">
+      <div id="toolbar">
+        <button
+          disabled={selectedApps && selectedApps.length === 0}
+          type="button"
+          className="btn btn-primary btn-sm"
+          onClick={() => toggleAllResults((openClose = !openClose))}
+        >
+          {openClose ? 'Contract all' : 'Expand all'}
+        </button>
+        <h3>Results</h3>
+      </div>
       <TransitionGroup className="result-list">
         {selectedApps.map(app => {
-          // const blockBlobClient = containerClient.getBlockBlobClient(blob.name)
-          // fetch(blockBlobClient.url).then(response => console.log(response.json()))
-
-          // const latestResults = app.results.find(r => r.commit === app.latestBuild)
-
           const latestTestrun = app.results.find(r => r.commit === app.latestBuild)
 
           return (
             <CSSTransition
               unmountOnExit
-              // in={inProp}
               timeout={{ appear: 0, enter: 300, exit: 300 }}
               classNames="list-transition"
               appear
             >
-              <details key={app.name}>
+              <details key={app.name} open={openClose}>
                 <summary class="blue">
                   {app.name}
                   <div className="build">
