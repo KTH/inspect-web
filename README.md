@@ -1,5 +1,7 @@
 # inspect-web
 
+Collects and presents the collected Google Lighthouse results.
+
 # license
 
 Copyright 2020 KTH
