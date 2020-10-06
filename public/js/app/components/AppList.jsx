@@ -33,7 +33,7 @@ function AppList() {
         <button
           disabled={selectedApps && selectedApps.length === 0}
           type="button"
-          className="btn btn-primary btn-sm"
+          className="btn btn-secondary btn-sm"
           onClick={() => toggleAllResults((openClose = !openClose))}
         >
           {openClose ? 'Contract all' : 'Expand all'}
