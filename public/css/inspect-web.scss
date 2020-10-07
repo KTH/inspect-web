@@ -3,14 +3,14 @@
 html,
 body,
 .container,
-.main,
-#app {
+.main {
   height: 100%;
 }
 
 #app {
   display: flex;
   flex-direction: column;
+  min-height: 100%;
 }
 
 .container {
@@ -36,6 +36,7 @@ menu {
 #mainRow {
   min-height: auto;
   flex-grow: 1;
+  background-color: #fff;
 }
 
 #inspectResults {
@@ -191,10 +192,10 @@ menu {
     position: absolute;
     right: 10%;
     top: 0;
-    // box-shadow: -1px -16px 26px -11px rgba(0, 0, 0, 0.19);
   }
 
   .footer {
+    // box-shadow: -1px -16px 26px -11px rgba(0, 0, 0, 0.19);
     margin-top: 6rem;
     margin-left: -10rem;
     height: 30vh;
