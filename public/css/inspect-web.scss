@@ -2,8 +2,21 @@
 
 html,
 body,
-.main {
+.container,
+.main,
+#app {
   height: 100%;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  // height: auto;
+  // min-height: 10vh;
+  // align-items: stretch;
 }
 
 #logo {
@@ -20,7 +33,14 @@ menu {
   margin-top: 0;
 }
 
+#mainRow {
+  min-height: auto;
+  flex-grow: 1;
+}
+
 #inspectResults {
+  height: -webkit-fill-available;
+
   #toolbar {
     h3 {
       margin-top: 0;
@@ -32,6 +52,10 @@ menu {
     button {
       float: right;
     }
+  }
+
+  #resultList {
+    padding-top: 1rem;
   }
 
   details {
@@ -145,5 +169,38 @@ menu {
   }
   100% {
     opacity: 0;
+  }
+}
+
+.footerContainer {
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  overflow: hidden;
+  background-color: #ffffff;
+  height: 15rem;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 150px;
+    width: 150px;
+    background-size: 150px 150px;
+    background-image: url('../img/lighthouse-logo.svg');
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 10%;
+    top: 0;
+    // box-shadow: -1px -16px 26px -11px rgba(0, 0, 0, 0.19);
+  }
+
+  .footer {
+    margin-top: 6rem;
+    margin-left: -10rem;
+    height: 30vh;
+    width: 120%;
+    background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+    transform: rotate(-5deg);
+    overflow: hidden;
   }
 }

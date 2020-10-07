@@ -40,7 +40,7 @@ function AppList() {
         </button>
         <h3>Results</h3>
       </div>
-      <TransitionGroup className="result-list">
+      <TransitionGroup id="resultList" className="result-list">
         {selectedApps.map(app => {
           const latestTestrun = app.results.find(r => r.commit === app.latestBuild)
 

@@ -14,22 +14,32 @@ const Start = () => {
   const { message, language: lang } = useStore()
 
   return (
-    <div className="row">
-      <div className="col-12">
-        <h1 id="logo">
-          KTH
-          <br />
-          &#305;nspect
-        </h1>
+    <>
+      <div className="row">
+        <div className="col-12">
+          <h1 id="logo">
+            KTH
+            <br />
+            &#305;nspect
+          </h1>
+        </div>
       </div>
-      <menu className="col-12 col-md-3" id="menu">
-        <Teams></Teams>
-        <Apps></Apps>
-      </menu>
-      <main className="col-12 col-md-9" id="mainContent">
-        <AppList></AppList>
-      </main>
-    </div>
+      <div className="row grow" id="mainRow">
+        <menu className="col-12 col-md-3" id="menu">
+          <Teams></Teams>
+          <Apps></Apps>
+        </menu>
+        <main className="col-12 col-md-9" id="mainContent">
+          <AppList></AppList>
+        </main>
+      </div>
+
+      <div className="row">
+        <div className="col footerContainer">
+          <div className="footer">start</div>
+        </div>
+      </div>
+    </>
   )
 }
 
