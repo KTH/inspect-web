@@ -36,7 +36,7 @@ const Start = () => {
 
       <div className="row">
         <div className="col footerContainer">
-          <div className="footer">start</div>
+          <div className="footer"></div>
         </div>
       </div>
     </>
