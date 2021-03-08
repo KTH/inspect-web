@@ -67,8 +67,7 @@ if (!self.window.Node) {
     NOTATION_NODE: 12,
   }
 }
-
-const { BlobServiceClient } = require('@azure/storage-blob')
+import BlobServiceClient from '@azure/storage-blob'
 
 onmessage = async function (e) {
   const blobServiceClient = new BlobServiceClient(e.data.config)

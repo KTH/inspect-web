@@ -3,21 +3,18 @@
 // @ts-check
 
 // eslint-disable-next-line no-unused-vars
-import { observable, observe, action, computed, reaction, autorun, toJS, set } from 'mobx'
 
-const { BlobServiceClient } = require('@azure/storage-blob')
+import { observable, observe, action } from 'mobx'
+
+import BlobServiceClient from '@azure/storage-blob'
+
 export default createApplicationStore
+console.log('URI: ', window.config.azureBlobConnectionString.uri)
 const blobServiceClient = new BlobServiceClient(window.config.azureBlobConnectionString.uri)
 
 function createApplicationStore() {
   const store = observable({
     language: null,
-
-    message: 'Hallo',
-
-    setMessage: action(async function setMessage(text = 'Happy coding!! :)') {
-      this.message = text
-    }),
 
     setLanguage: action(function setLanguage(lang) {
       this.language = lang
