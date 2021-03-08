@@ -27,7 +27,7 @@
     "move-handlebar-pages": "cp ./node_modules/kth-node-web-common/lib/handlebars/pages/views/error.handlebars ./server/views/system/error.handlebars && cp ./node_modules/kth-node-web-common/lib/handlebars/pages/layouts/errorLayout.handlebars ./server/views/layouts/errorLayout.handlebars"
   },
   "dependencies": {
-    "@azure/storage-blob": "^12.1.0",
+    "@azure/storage-blob": "^12.4.1",
     "@babel/runtime": "^7.13.9",
     "applicationinsights": "^1.8.10",
     "body-parser": "^1.19.0",

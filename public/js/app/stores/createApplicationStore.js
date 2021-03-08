@@ -6,7 +6,7 @@
 
 import { observable, observe, action } from 'mobx'
 
-import BlobServiceClient from '@azure/storage-blob'
+const { BlobServiceClient } = require('@azure/storage-blob')
 
 export default createApplicationStore
 console.log('URI: ', window.config.azureBlobConnectionString.uri)
