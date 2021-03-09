@@ -55,7 +55,7 @@ function createApplicationStore() {
           })
       }
 
-      getTeamsAppsWorker = getTeamsAppsWorker ? getTeamsAppsWorker : new Worker('./getTeamsAppsWorker.js')
+      getTeamsAppsWorker = getTeamsAppsWorker || new Worker('./getTeamsAppsWorker.js')
 
       getTeamsAppsWorker.onmessage = function (e) {
         store.apps.push(

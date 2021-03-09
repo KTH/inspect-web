@@ -2,6 +2,37 @@
 
 Collects and presents the collected Google Lighthouse results.
 
+## Quickrun
+
+1.  Clone the repo
+    ```bash
+    $ git clone git@github.com:KTH/inspect-web
+    ```
+2.  Install dependencies
+    ```bash
+    $ npm install
+    ```
+3.  Create a `.env` file in the root of the project
+
+    ```
+    LDAP_URI=ldaps://[username]@ldap.ref.ug.kth.se
+    LDAP_PASSWORD=[password]
+    AZURE_BLOB_SAS_CONNECTION_STRING=[SAS connection string for our Azure Blob storage]
+    ```
+
+4.  Start your Redis
+
+5.  Build and start the app
+
+    _NOTE: Due to a how Parcel (v2-Beta currently used in this project) handles how external libraries refers to Node.js specific packages (in this case 'Buffer') it's not currently working to use 'parcel watch'._
+
+    ```bash
+    $ npm run build
+    $ npm run start-dev
+    ```
+
+And go to http://localhost:3000/inspect
+
 # license
 
 Copyright 2020 KTH
