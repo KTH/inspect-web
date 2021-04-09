@@ -13,9 +13,11 @@
 //   navigator,
 // }
 
+// eslint-disable-next-line no-unused-vars
 import DomParserFix from './DOMParserFix'
 
-const { BlobServiceClient } = require('@azure/storage-blob')
+// eslint-disable-next-line import/order
+import { BlobServiceClient } from '@azure/storage-blob'
 
 onmessage = async function (e) {
   const blobServiceClient = new BlobServiceClient(e.data.config)
@@ -26,7 +28,6 @@ onmessage = async function (e) {
   const apps = {}
 
   for await (const blob of containerClient.listBlobsFlat()) {
-    console.log('getAppsWorker[' + team + '] working on app: ' + blob.name)
     if (/^\//.test(blob.name)) {
       console.log('Bad filename: ' + blob.name)
       continue

@@ -6,10 +6,11 @@
 
 import { observable, observe, action } from 'mobx'
 
+import GetTeamsAppsWorker from './getTeamsApps.worker.js'
+
 const { BlobServiceClient } = require('@azure/storage-blob')
 
 export default createApplicationStore
-console.log('URI: ', window.config.azureBlobConnectionString.uri)
 const blobServiceClient = new BlobServiceClient(window.config.azureBlobConnectionString.uri)
 
 function createApplicationStore() {
@@ -55,7 +56,7 @@ function createApplicationStore() {
           })
       }
 
-      getTeamsAppsWorker = getTeamsAppsWorker || new Worker('./getTeamsAppsWorker.js')
+      getTeamsAppsWorker = getTeamsAppsWorker || new GetTeamsAppsWorker()
 
       getTeamsAppsWorker.onmessage = function (e) {
         store.apps.push(
