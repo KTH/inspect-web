@@ -5,26 +5,19 @@
   "private": true,
   "license": "MIT",
   "author": "KTH",
-  "browserslist": [
-    "last 1 Edge version",
-    "last 1 Chrome version",
-    "last 1 Firefox version"
-  ],
   "repository": {
     "type": "git",
     "uri": "https://github.com/KTH/inspect-web"
   },
   "scripts": {
-    "vendor": "parcel build  ./public/js/vendor.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:notify": "jest --watch --notify",
-    "docker": "npm install --development && npm run build && npm prune --production",
-    "build": "NODE_ENV=production npm run move-handlebar-pages && rm -rf dist && parcel build ./public/js/app/app.jsx ./public/js/app/serverSideFunctions.js --public-url /inspect/static",
-    "build-dev": "rm -rf dist && parcel watch ./public/js/app/app.jsx ./public/js/app/serverSideFunctions.js --public-url /inspect/static --no-source-maps --no-scope-hoist false",
-    "start": "NODE_ENV=production node app.js",
-    "start-dev": "cross-env NODE_ENV=development concurrently --kill-others -n build,app \"nodemon -e js,json,handlebars --ignore dist/ --ignore dist-dev/ app.js\"",
-    "move-handlebar-pages": "cp ./node_modules/kth-node-web-common/lib/handlebars/pages/views/error.handlebars ./server/views/system/error.handlebars && cp ./node_modules/kth-node-web-common/lib/handlebars/pages/layouts/errorLayout.handlebars ./server/views/layouts/errorLayout.handlebars"
+    "build": "bash ./build.sh prod",
+    "build-dev": "bash ./build.sh dev",
+    "start": "bash -c '[ -f /KTH_NODEJS ] && cat /KTH_NODEJS; NODE_ENV=production node app.js'",
+    "start-dev": "cross-env NODE_ENV=development concurrently --kill-others -n build,app \"npm run build-dev\" \"nodemon app.js\"",
+    "postinstall": "bash -c 'rm -rf ./dist; rm -rf ./node_modules/.cache/webpack'"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.4.1",
@@ -62,33 +55,38 @@
     "react-router-dom": "^5.2.0",
     "react-transition-group": "^4.4.1",
     "safe-utils": "^0.2.1",
-    "xmldom": "^0.3.0"
+    "xmldom": "^0.5.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.0",
     "@babel/core": "^7.13.8",
-    "@babel/plugin-proposal-decorators": "^7.13.5",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.13.9",
     "@babel/preset-env": "7.13.8",
     "@babel/preset-react": "^7.12.13",
     "@kth/eslint-config-kth": "^1.0.10",
-    "@parcel/transformer-sass": "^2.0.0-nightly.621",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@types/jest": "^26.0.20",
+    "babel-loader": "^8.2.2",
     "concurrently": "^6.0.0",
     "cross-env": "^7.0.3",
+    "css-loader": "^5.2.0",
     "eslint": "^7.21.0",
+    "file-loader": "^6.2.0",
     "husky": "^4.3.0",
     "jest": "^26.6.3",
     "jest-extended": "^0.11.5",
+    "mini-css-extract-plugin": "^1.4.1",
     "nodemon": "^2.0.7",
-    "parcel": "^2.0.0-beta.1",
     "postcss": "^8.2.7",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "sass": "^1.32.8",
+    "sass-loader": "^11.0.1",
+    "terser-webpack-plugin": "^5.1.1",
+    "webpack": "^5.31.0",
+    "webpack-cli": "^4.6.0",
     "zombie": "6.1.4"
   },
   "prettier": {
@@ -98,9 +96,6 @@
     "singleQuote": true,
     "printWidth": 120,
     "arrowParens": "avoid"
-  },
-  "engines": {
-    "node": "12"
   },
   "husky": {
     "hooks": {
