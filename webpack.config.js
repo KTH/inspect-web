@@ -65,12 +65,14 @@ function getTransformationRules({ contextIsNode }) {
     resolve: {
       extensions: MAGIC_EXTENSIONS_IF_OMITTED_WITH_IMPORT,
     },
-    target: contextIsNode ? 'node' : 'browserslist:> 0.25%, not dead',
+    // target: contextIsNode ? 'node' : 'web',
+    target: 'web',
     module: {
       rules: [
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
+          // exclude: /node_modules\/(?!(cipher-base|uuid))/,
           use: {
             loader: 'babel-loader',
             options: { ...BabelConfig, ...ALLOW_MIX_OF_CJS_AND_ESM_IMPORTS },
@@ -93,6 +95,13 @@ function getTransformationRules({ contextIsNode }) {
               },
             },
           ],
+        },
+        {
+          test: /\.worker\.js$/,
+          loader: 'worker-loader',
+          options: {
+            esModule: true,
+          },
         },
       ],
     },
@@ -136,7 +145,7 @@ function getOutputOptions({ contextIsNode }) {
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
-      publicPath: ENV_IS_DEV ? `http://localhost:3000${PROXY_PREFIX_URI}/` : `${PROXY_PREFIX_URI}/`,
+      publicPath: ENV_IS_DEV ? `http://localhost:3000${PROXY_PREFIX_URI}/static/` : `${PROXY_PREFIX_URI}/static/`,
       libraryTarget: contextIsNode ? 'umd' : undefined,
     },
     devtool: ENV_IS_DEV ? DEV_SOURCE_MAP_TYPE : undefined,
