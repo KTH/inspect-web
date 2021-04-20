@@ -7,13 +7,7 @@
  * *************************************************
  *
  */
-const {
-  getEnv,
-  devDefaults,
-  unpackLDAPConfig,
-  unpackRedisConfig,
-  unpackNodeApiConfig,
-} = require('kth-node-configuration')
+const { getEnv, devDefaults, unpackLDAPConfig } = require('kth-node-configuration')
 const { typeConversion } = require('kth-node-configuration/lib/utils')
 const { safeGet } = require('safe-utils')
 
@@ -21,35 +15,18 @@ const { safeGet } = require('safe-utils')
 const devPort = devDefaults(3000)
 const devSsl = devDefaults(false)
 const devUrl = devDefaults('http://localhost:' + devPort)
-const devInnovationApi = devDefaults('http://localhost:3001/api/node?defaultTimeout=10000') // required=true&
-const devSessionKey = devDefaults('node-web.sid')
+const devSessionKey = devDefaults('inspect-web.sid')
 const devSessionUseRedis = devDefaults(true)
-const devRedis = devDefaults('redis://localhost:6379/')
-const devLdap = undefined // Do not enter LDAP_URI or LDAP_PASSWORD here, use env_vars
-const devSsoBaseURL = devDefaults('https://login-r.referens.sys.kth.se')
-const devLdapBase = devDefaults('OU=UG,DC=ref,DC=ug,DC=kth,DC=se')
+const devOidcIssuerURL = devDefaults('https://login.ref.ug.kth.se/adfs')
+const devOidcConfigurationURL = devDefaults(`${devOidcIssuerURL}/.well-known/openid-configuration`)
+const devOidcTokenSecret = devDefaults('tokenSecretString')
+const prefixPath = devDefaults('/inspect')
+const devOidcCallbackURL = devDefaults(`http://localhost:3000${prefixPath}/auth/login/callback`)
+const devOidcCallbackSilentURL = devDefaults(`http://localhost:3000${prefixPath}/auth/silent/callback`)
+const devOidcLogoutCallbackURL = devDefaults(`http://localhost:3000${prefixPath}/auth/logout/callback`)
 // END DEFAULT SETTINGS
 
 // These options are fixed for this application
-const ldapOptions = {
-  base: getEnv('LDAP_BASE', devLdapBase),
-  filter: '(ugKthid=KTHID)',
-  filterReplaceHolder: 'KTHID',
-  userattrs: ['displayName', 'mail', 'ugUsername', 'memberOf', 'ugKthid'],
-  groupattrs: ['cn', 'objectCategory'],
-  testSearch: true, // TODO: Should this be an ENV setting?
-  timeout: typeConversion(getEnv('LDAP_TIMEOUT', null)),
-  reconnectTime: typeConversion(getEnv('LDAP_IDLE_RECONNECT_INTERVAL', null)),
-  reconnectOnIdle: getEnv('LDAP_IDLE_RECONNECT_INTERVAL', null) !== null,
-  connecttimeout: typeConversion(getEnv('LDAP_CONNECT_TIMEOUT', null)),
-  searchtimeout: typeConversion(getEnv('LDAP_SEARCH_TIMEOUT', null)),
-}
-
-Object.keys(ldapOptions).forEach(key => {
-  if (ldapOptions[key] === null) {
-    delete ldapOptions[key]
-  }
-})
 
 module.exports = {
   hostUrl: getEnv('SERVER_HOST_URL', devUrl),
@@ -62,13 +39,15 @@ module.exports = {
   },
 
   // Authentication
-  auth: {
-    adminGroup: 'app.node.admin',
+  oidc: {
+    configurationUrl: getEnv('OIDC_CONFIGURATION_URL', devDefaults(devOidcConfigurationURL)),
+    clientId: getEnv('OIDC_APPLICATION_ID', null),
+    clientSecret: getEnv('OIDC_CLIENT_SECRET', null),
+    tokenSecret: getEnv('OIDC_TOKEN_SECRET', devDefaults(devOidcTokenSecret)),
+    callbackLoginUrl: getEnv('OIDC_CALLBACK_URL', devDefaults(devOidcCallbackURL)),
+    callbackSilentLoginUrl: getEnv('OIDC_CALLBACK_SILENT_URL', devDefaults(devOidcCallbackSilentURL)),
+    callbackLogoutUrl: getEnv('OIDC_CALLBACK_LOGOUT_URL', devDefaults(devOidcLogoutCallbackURL)),
   },
-  cas: {
-    ssoBaseURL: getEnv('CAS_SSO_URI', devSsoBaseURL),
-  },
-  ldap: unpackLDAPConfig('LDAP_URI', getEnv('LDAP_PASSWORD'), devLdap, ldapOptions),
 
   // Cortina
   blockApi: {

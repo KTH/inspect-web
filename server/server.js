@@ -145,58 +145,48 @@ const { languageHandler } = require('kth-node-web-common/lib/language')
 server.use(config.proxyPrefixPath.uri, languageHandler)
 
 /* ******************************
- * ******* AUTHENTICATION *******
- * ******************************
- */
+ ***** AUTHENTICATION - OIDC ****
+ ****************************** */
+
+const _addProxy = uri => `${config.proxyPrefixPath.uri}${uri}`
+
 const passport = require('passport')
-// const ldapClient = require('./adldapClient')
-const {
-  authLoginHandler,
-  authCheckHandler,
-  logoutHandler,
-  pgtCallbackHandler,
-  serverLogin,
-  getServerGatewayLogin,
-} = require('kth-node-passport-cas').routeHandlers({
-  casLoginUri: config.proxyPrefixPath.uri + '/login',
-  casGatewayUri: config.proxyPrefixPath.uri + '/loginGateway',
-  proxyPrefixPath: config.proxyPrefixPath.uri,
-  server,
-})
-const { redirectAuthenticatedUserHandler } = require('./authentication')
+
 server.use(passport.initialize())
 server.use(passport.session())
 
-const authRoute = AppRouter()
-authRoute.get('cas.login', config.proxyPrefixPath.uri + '/login', authLoginHandler, redirectAuthenticatedUserHandler)
-authRoute.get(
-  'cas.gateway',
-  config.proxyPrefixPath.uri + '/loginGateway',
-  authCheckHandler,
-  redirectAuthenticatedUserHandler
-)
-authRoute.get('cas.logout', config.proxyPrefixPath.uri + '/logout', logoutHandler)
-// Optional pgtCallback (use config.cas.pgtUrl?)
-authRoute.get('cas.pgtCallback', config.proxyPrefixPath.uri + '/pgtCallback', pgtCallbackHandler)
-server.use('/', authRoute.getRouter())
+passport.serializeUser((user, done) => {
+  if (user) {
+    done(null, user)
+  } else {
+    done()
+  }
+})
 
-// Convenience methods that should really be removed
-// server.login = serverLogin
-// server.gatewayLogin = getServerGatewayLogin
+passport.deserializeUser((user, done) => {
+  if (user) {
+    done(null, user)
+  } else {
+    done()
+  }
+})
 
-/* ******************************
- * ******* CORTINA BLOCKS *******
- * ******************************
- */
-// server.use(
-//   config.proxyPrefixPath.uri,
-//   require('kth-node-web-common/lib/web/cortina')({
-//     blockUrl: config.blockApi.blockUrl,
-//     proxyPrefixPath: config.proxyPrefixPath.uri,
-//     hostUrl: config.hostUrl,
-//     redisConfig: config.cache.cortinaBlock.redis,
-//   })
-// )
+const { OpenIDConnect } = require('@kth/kth-node-passport-oidc')
+
+const oidc = new OpenIDConnect(server, passport, {
+  ...config.oidc,
+  callbackLoginRoute: _addProxy('/auth/login/callback'),
+  callbackLogoutRoute: _addProxy('/auth/logout/callback'),
+  callbackSilentLoginRoute: _addProxy('/auth/silent/callback'),
+  defaultRedirect: _addProxy(''),
+  failureRedirect: _addProxy(''),
+})
+
+// eslint-disable-next-line no-unused-vars
+server.get(_addProxy('/login'), oidc.login, (req, res, next) => res.redirect(_addProxy('')))
+
+// eslint-disable-next-line no-unused-vars
+server.get(_addProxy('/logout'), oidc.logout)
 
 /* ********************************
  * ******* CRAWLER REDIRECT *******
@@ -228,15 +218,7 @@ server.use('/', systemRoute.getRouter())
 
 // App routes
 const appRoute = AppRouter()
-appRoute.get('system.index', config.proxyPrefixPath.uri + '/', serverLogin, App.getIndex)
-// appRoute.get('system.index', config.proxyPrefixPath.uri + '/:page', serverLogin, Sample.getIndex)
-// appRoute.get(
-//   'system.gateway',
-//   config.proxyPrefixPath.uri + '/gateway',
-//   getServerGatewayLogin('/'),
-//   requireRole('isAdmin'),
-//   Sample.getIndex
-// )
+appRoute.get('system.index', config.proxyPrefixPath.uri + '/', oidc.login, App.getIndex)
 server.use('/', appRoute.getRouter())
 
 // Not found etc

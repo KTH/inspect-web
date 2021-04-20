@@ -17,11 +17,13 @@
     "build-dev": "bash ./build.sh dev",
     "start": "bash -c '[ -f /KTH_NODEJS ] && cat /KTH_NODEJS; NODE_ENV=production node app.js'",
     "start-dev": "cross-env NODE_ENV=development concurrently --kill-others -n build,app \"npm run build-dev\" \"nodemon app.js\"",
-    "postinstall": "bash -c 'rm -rf ./dist; rm -rf ./node_modules/.cache/webpack'"
+    "postinstall": "bash -c 'rm -rf ./dist; rm -rf ./node_modules/.cache/webpack'",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.5.0",
     "@babel/runtime": "^7.13.9",
+    "@kth/kth-node-passport-oidc": "^1.0.33",
     "applicationinsights": "^1.8.10",
     "body-parser": "^1.19.0",
     "component-registry": "^1.3.1",
@@ -35,10 +37,8 @@
     "kth-node-configuration": "^2.0.3",
     "kth-node-express-routing": "^2.0.5",
     "kth-node-i18n": "^1.0.3",
-    "kth-node-ldap": "^3.1.1",
     "kth-node-log": "^3.1.3",
     "kth-node-monitor": "^1.1.9",
-    "kth-node-passport-cas": "^3.1.14",
     "kth-node-redis": "^3.1.18",
     "kth-node-server": "^3.1.2",
     "kth-node-session": "^1.0.4",
